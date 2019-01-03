@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="814.0" prefWidth="1288.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+   <children>
+      <TabPane layoutX="-2.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="824.0" prefWidth="1283.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="Start">
+               <content>
+                  <fx:include fx:id="start" source="StartView.fxml" />
+               </content></Tab>
+            <Tab text="Display">
+               <content>
+                  <fx:include fx:id="display" source="Display.fxml" />
+               </content></Tab>
+            <Tab text="Simple Operation">
+               <content>
+                  <fx:include fx:id="simpleAdd" source="SimpleAdd.fxml" />
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

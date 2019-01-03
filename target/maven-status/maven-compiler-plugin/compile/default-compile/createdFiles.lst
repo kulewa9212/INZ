@@ -1,0 +1,8 @@
+com\mycompany\inz\Signal.class
+com\mycompany\inz\MainApp.class
+com\mycompany\inz\Methdos.class
+com\mycompany\inz\DataBase.class
+controllers\DisplayController.class
+controllers\SimpleAddController.class
+controllers\MainController.class
+controllers\StartController.class
