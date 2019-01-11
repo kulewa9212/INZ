@@ -6,10 +6,16 @@ import javafx.fxml.FXML;
 
 public class MainController {
 
-    TreeMap<String, Signal> signals;
-    @FXML StartController startController;
-    @FXML DisplayController displayController;
-    @FXML SimpleAddController simpleAddController;
+    public TreeMap<String, Signal> signals;
+
+    @FXML
+    StartController startController;
+
+    @FXML
+    DisplayController displayController;
+
+    @FXML
+    SimpleAddController simpleAddController;
 
     @FXML
     public void initialize() {
@@ -17,14 +23,5 @@ public class MainController {
         this.startController.init(this);
         displayController.init(this);
         simpleAddController.init(this);
-       
     }
-
-    public void ControlFun() {
-        System.out.println("OKEJ");
-    }
-
-   
-
-
 }

@@ -14,5 +14,6 @@
       <TextField layoutX="1049.0" layoutY="437.0" />
       <Button layoutX="1070.0" layoutY="133.0" mnemonicParsing="false" onMouseClicked="#Preview" prefHeight="39.0" prefWidth="144.0" text="Preview" />
       <Button layoutX="1070.0" layoutY="231.0" mnemonicParsing="false" onMouseClicked="#clean" prefHeight="39.0" prefWidth="144.0" text="Clean" />
+      <Button layoutX="1071.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#enter" prefHeight="39.0" prefWidth="144.0" text="Enter" />
    </children>
 </AnchorPane>
