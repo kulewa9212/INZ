@@ -16,12 +16,28 @@ public class MainController {
 
     @FXML
     SimpleAddController simpleAddController;
+    
+    @FXML
+    FilterController filterController;
+    
+    @FXML
+    SamplingController samplingController;
+    
+    @FXML
+    RecoverController recoverController;
+    
+    @FXML
+    QuantiController quantiController;
 
     @FXML
     public void initialize() {
         this.signals = new TreeMap();
-        this.startController.init(this);
+        startController.init(this);
         displayController.init(this);
         simpleAddController.init(this);
+        filterController.init(this);
+        samplingController.init(this);
+        recoverController.init(this);
+        quantiController.init(this);
     }
 }

@@ -1,0 +1,32 @@
+.tab {
+    -fx-background-color: 
+        linear-gradient(#F5F2C9, #F5F2C9);
+    -fx-background-radius: 6.5;
+    -fx-background-insets: 0.5;
+    -fx-text-origin: bottom;
+    -fx-border-color: #753A06;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#753A06,#753A06);
+}
+
+.tab.selected {
+    -fx-background-color: 
+        #753A06;
+    -fx-background-radius: 6.5;
+    -fx-background-insets: 0.5;
+    -fx-text-fill: white;
+    -fx-border-color: #753A06;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(#753A06,#753A06);
+}
+
+.tab-pane {
+    -fx-background-color: 
+        linear-gradient(#F5F2C9, #F5F2C9);
+    -fx-background-radius: 6.5;
+    -fx-background-insets: 0.5;
+    -fx-border-color: #753A06;
+    -fx-text-fill: white;
+    
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="Pane" prefHeight="739.0" prefWidth="1172.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.QuantiController">
+   <children>
+      <ComboBox fx:id="signalList" layoutX="48.0" layoutY="55.0" prefHeight="42.0" prefWidth="257.0" />
+      <Button layoutX="48.0" layoutY="103.0" mnemonicParsing="false" onAction="#showOriginalSignal" prefHeight="42.0" prefWidth="257.0" text="Original signal view" />
+      <TextField fx:id="fField" layoutX="161.0" layoutY="159.0" prefHeight="42.0" prefWidth="144.0" />
+      <Label layoutX="48.0" layoutY="159.0" prefHeight="35.0" prefWidth="87.0" text="sampling f" />
+      <Button layoutX="48.0" layoutY="315.0" mnemonicParsing="false" onAction="#previewSampledSignal" prefHeight="42.0" prefWidth="257.0" text="Preview" />
+      <Label layoutX="48.0" layoutY="265.0" prefHeight="35.0" prefWidth="87.0" text="singal name" />
+      <TextField fx:id="resultName" layoutX="161.0" layoutY="262.0" prefHeight="42.0" prefWidth="144.0" />
+      <Button layoutX="48.0" layoutY="370.0" mnemonicParsing="false" onAction="#sampleSignal" prefHeight="42.0" prefWidth="257.0" text="Load" />
+      <ComboBox fx:id="methodsList" layoutX="48.0" layoutY="208.0" prefHeight="42.0" prefWidth="257.0" />
+      <ListView fx:id="parameters" layoutX="48.0" layoutY="483.0" prefHeight="178.0" prefWidth="257.0" />
+      <Button layoutX="48.0" layoutY="424.0" mnemonicParsing="false" onAction="#clean" prefHeight="42.0" prefWidth="257.0" text="Clean" />
+   </children>
+</AnchorPane>

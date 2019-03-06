@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="SimpleAddPane" prefHeight="844.0" prefWidth="1283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SimpleAddController">
+   <children>
+      <ComboBox fx:id="SignalAdd1" layoutX="41.0" layoutY="409.0" prefHeight="32.0" prefWidth="173.0" />
+      <ComboBox fx:id="AddChoice" layoutX="1090.0" layoutY="324.0" prefHeight="39.0" prefWidth="75.0" promptText=" " />
+      <ComboBox fx:id="SignalAdd2" layoutX="533.0" layoutY="409.0" prefHeight="32.0" prefWidth="173.0" />
+      <TextField fx:id="resultNameField" layoutX="1039.0" layoutY="496.0" />
+      <Button layoutX="1039.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#Preview" prefHeight="39.0" prefWidth="187.0" text="Preview result" />
+      <Button layoutX="1039.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#cleanPreview" prefHeight="39.0" prefWidth="187.0" text="Clean" />
+      <Button layoutX="1037.0" layoutY="549.0" mnemonicParsing="false" onMouseClicked="#enter" prefHeight="39.0" prefWidth="187.0" text="Enter" />
+      <Separator layoutX="983.0" layoutY="8.0" orientation="VERTICAL" prefHeight="833.0" prefWidth="0.0" />
+      <Separator layoutX="983.0" layoutY="426.0" prefHeight="0.0" prefWidth="339.0" />
+      <Button layoutX="1037.0" layoutY="604.0" mnemonicParsing="false" onMouseClicked="#cleanResult" prefHeight="39.0" prefWidth="187.0" text="Clean" />
+      <Button layoutX="1040.0" layoutY="90.0" mnemonicParsing="false" onMouseClicked="#previewSignals" prefHeight="39.0" prefWidth="187.0" text="Preview signals" />
+   </children>
+</AnchorPane>

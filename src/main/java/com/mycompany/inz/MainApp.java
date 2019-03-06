@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class MainApp extends Application {
@@ -16,8 +17,9 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         stage.setResizable(false);
-        stage.setTitle("JavaFX and Maven");
+        stage.setTitle("Signal computation and visualisation");
         stage.setScene(scene);
+       
         stage.show();
     }
 

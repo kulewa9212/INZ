@@ -1,14 +1,20 @@
 package com.mycompany.inz;
 
 import controllers.MainController;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 
 /**
  *
@@ -18,7 +24,7 @@ public class Methods {
 
     public static double assertValue(Double t, Double t0, Double t1, Double ft0,
             Double ft1) {
-        return ((ft0 - ft1) / (t0 - t1)) * t + ft0 - ((t * (ft0 - ft1)) / (t0 - t1));
+        return ((ft0 - ft1) / (t0 - t1)) * t + ft0 - ((t0 * (ft0 - ft1)) / (t0 - t1));
     }
 
     public static void removeSignal(List<ObservableList<String>> Arg, String S) {
@@ -49,7 +55,7 @@ public class Methods {
     public static void setPreviewChart(LineChart<Number, Number> SignalChart,
             XYChart.Series<Number, Number> SeriesArg) {
         SignalChart.setCreateSymbols(false);
-        SignalChart.setLegendVisible(false);
+        SignalChart.setLegendVisible(true);
         SignalChart.getData().add(SeriesArg);
     }
 
@@ -66,8 +72,8 @@ public class Methods {
         Methods.setPreviewChart(SignalChart, series);
     }
 
-    public static Double setSimpleActiom(ComboBox<String> ComboArg, Double ValueX,
-            Double ValueY) {
+    public static Double setSimpleActiom(ComboBox<String> ComboArg,
+            Double ValueX, Double ValueY) {
         switch (ComboArg.getSelectionModel().getSelectedItem()) {
             case "+":
                 return ValueX + ValueY;
@@ -95,6 +101,36 @@ public class Methods {
             Elem.getData().clear();
         }
 
+    }
+
+    public static boolean addSignalToMainBase(TreeMap<String, Signal> signalBase, Signal signal, String SignalName) {
+        if (signalBase.containsKey(SignalName) || SignalName.isEmpty()) {
+            return false;
+        } else {
+            signalBase.put(SignalName, signal);
+            return true;
+        }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+    public void showErrorBox(String errorType) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().
+                getResource(errorType));
+        Scene scene = new Scene(root);
+        stage.setResizable(false);
+        stage.setTitle("Error");
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

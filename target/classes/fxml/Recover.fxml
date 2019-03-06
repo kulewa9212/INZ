@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="Pane" prefHeight="739.0" prefWidth="1172.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RecoverController">
+   <children>
+      <ComboBox fx:id="signalList" layoutX="48.0" layoutY="112.0" prefHeight="42.0" prefWidth="257.0" />
+      <Button layoutX="48.0" layoutY="189.0" mnemonicParsing="false" onAction="#showOriginalSignal" prefHeight="42.0" prefWidth="257.0" text="Original signal view" />
+      <Button layoutX="48.0" layoutY="447.0" mnemonicParsing="false" onAction="#previewRecoveredSignal" prefHeight="42.0" prefWidth="257.0" text="Preview" />
+      <Label layoutX="48.0" layoutY="359.0" prefHeight="35.0" prefWidth="87.0" text="singal name" />
+      <TextField fx:id="resultName" layoutX="161.0" layoutY="356.0" prefHeight="42.0" prefWidth="144.0" />
+      <Button layoutX="48.0" layoutY="507.0" mnemonicParsing="false" onAction="#recoverSignal" prefHeight="42.0" prefWidth="257.0" text="Load" />
+      <ComboBox fx:id="MethodsList" layoutX="48.0" layoutY="259.0" prefHeight="42.0" prefWidth="257.0" />
+   </children>
+</AnchorPane>

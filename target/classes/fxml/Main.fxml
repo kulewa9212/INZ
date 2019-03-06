@@ -7,24 +7,46 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="814.0" prefWidth="1288.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
-   <children>
-      <TabPane layoutX="-2.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="824.0" prefWidth="1283.0" tabClosingPolicy="UNAVAILABLE">
-         <tabs>
-            <Tab text="Start">
-               <content>
-                  <fx:include fx:id="start" source="StartView.fxml" />
-               </content></Tab>
-            <Tab text="Display">
-               <content>
-                  <fx:include fx:id="display" source="Display.fxml" />
-               </content></Tab>
-            <Tab text="Simple Operation">
-               <content>
-                  <fx:include fx:id="simpleAdd" source="SimpleAdd.fxml" />
-               </content>
-            </Tab>
-         </tabs>
-      </TabPane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="819.0" prefWidth="1256.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+    <children>
+        <TabPane layoutX="-2.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="867.0" prefWidth="1268.0" stylesheets="@../styles/tabs.css" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Start                                     ">
+                    <content>
+                        <fx:include fx:id="start" source="StartBox.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Display                           ">
+                    <content>
+                        <fx:include fx:id="display" source="Display.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Simple Operation          ">
+                    <content>
+                        <fx:include fx:id="simpleAdd" source="SimpleAddView.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Filter                                           ">
+                    <content>
+                        <fx:include fx:id="filter" source="FilterView.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Sampling                ">
+                    <content>
+                        <fx:include fx:id="sampling" source="SamplingView.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Recover                    ">
+                    <content>
+                        <fx:include fx:id="recover" source="Recover.fxml" />
+                    </content>
+                </Tab>
+                 <Tab text="Quanti                ">
+                    <content>
+                        <fx:include fx:id="quanti" source="QuantiView.fxml" />
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>
