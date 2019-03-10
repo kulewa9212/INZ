@@ -12,7 +12,7 @@
       <ComboBox fx:id="AddChoice" layoutX="1090.0" layoutY="324.0" prefHeight="39.0" prefWidth="75.0" promptText=" " />
       <ComboBox fx:id="SignalAdd2" layoutX="533.0" layoutY="409.0" prefHeight="32.0" prefWidth="173.0" />
       <TextField fx:id="resultNameField" layoutX="1039.0" layoutY="496.0" />
-      <Button layoutX="1039.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#Preview" prefHeight="39.0" prefWidth="187.0" text="Preview result" />
+      <Button layoutX="1039.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#preview" prefHeight="39.0" prefWidth="187.0" text="Preview result" />
       <Button layoutX="1039.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#cleanPreview" prefHeight="39.0" prefWidth="187.0" text="Clean" />
       <Button layoutX="1037.0" layoutY="549.0" mnemonicParsing="false" onMouseClicked="#enter" prefHeight="39.0" prefWidth="187.0" text="Enter" />
       <Separator layoutX="983.0" layoutY="8.0" orientation="VERTICAL" prefHeight="833.0" prefWidth="0.0" />

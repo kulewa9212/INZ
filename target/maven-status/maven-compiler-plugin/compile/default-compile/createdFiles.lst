@@ -1,6 +1,7 @@
 com\mycompany\inz\Signal.class
 controllers\StartController$10.class
 com\mycompany\inz\SignalShape.class
+controllers\AbstractMain.class
 controllers\QuantiController.class
 controllers\StartController$5.class
 controllers\FilterController.class

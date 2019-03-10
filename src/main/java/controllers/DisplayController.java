@@ -12,10 +12,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
-public class DisplayController {
+public class DisplayController extends AbstractMain {
 
-    MainController MainController;
-
+    //  MainController MainController;
     @FXML
     private AnchorPane DisplayPane;
 
@@ -28,7 +27,9 @@ public class DisplayController {
     @FXML
     protected ListView<String> parameters;
 
+    @Override
     void init(MainController aThis) {
+        super.init(aThis);
         MainController = aThis;
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
@@ -74,6 +75,7 @@ public class DisplayController {
         parameters.getItems().add("Average value          :     " + average);
         parameters.getItems().add("Average power        :     " + power);
         parameters.getItems().add("RMS                         :     " + rms);
+        parameters.getItems().add("Variance                  :      " + variance);
 
     }
 
@@ -87,26 +89,8 @@ public class DisplayController {
     void removeSignal() {
         String SignalToRemove
                 = this.SignalList.getSelectionModel().getSelectedItem();
-        ArrayList<ObservableList<String>> SignalLists
-                = new ArrayList<>();
-        SignalLists.add(this.SignalList.getItems());
-        SignalLists.add(this.MainController.simpleAddController.SignalAdd1.
-                getItems());
-        SignalLists.add(this.MainController.simpleAddController.SignalAdd2.
-                getItems());
-        SignalLists.add(this.MainController.startController.SignalList.
-                getItems());
-        SignalLists.add(this.MainController.filterController.SignalAdd1.
-                getItems());
-        SignalLists.add(this.MainController.filterController.SignalAdd2.
-                getItems());
-        SignalLists.add(this.MainController.samplingController.signalList.
-                getItems());
-        SignalLists.add(MainController.recoverController.signalList.
-                getItems());
-        SignalLists.add(MainController.quantiController.signalList.
-                getItems());
-        this.MainController.signals.remove(SignalToRemove);
-        Methods.removeSignal(SignalLists, SignalToRemove);
+        ArrayList<ObservableList<String>> signalLists
+                = super.getSignalLists();
+        Methods.removeSignal(signalLists, SignalToRemove);
     }
 }

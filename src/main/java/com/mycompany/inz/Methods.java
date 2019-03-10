@@ -132,5 +132,9 @@ public class Methods {
         stage.setScene(scene);
         stage.show();
     }
+    
+    public static String readComboBoxValue(ComboBox<String> CB){
+    return CB.getSelectionModel().getSelectedItem();
+    }
 
 }

@@ -14,6 +14,6 @@
       <Button layoutX="36.0" layoutY="153.0" mnemonicParsing="false" onMouseClicked="#addToChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Display" />
       <Button layoutX="36.0" layoutY="213.0" mnemonicParsing="false" onMouseClicked="#removeSignal" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Remove" />
       <Button layoutX="36.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#cleanSignalChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Clean " />
-      <ListView fx:id="parameters" layoutX="36.0" layoutY="550.0" prefHeight="119.0" prefWidth="274.0" />
+      <ListView fx:id="parameters" layoutX="36.0" layoutY="550.0" prefHeight="147.0" prefWidth="274.0" />
    </children>
 </AnchorPane>

@@ -13,9 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
@@ -23,22 +20,16 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 /**
  *
  * @author Ewa Skrzypek
  */
-public class RecoverController {
-
-    MainController MainController;
+public class RecoverController extends AbstractMain{
 
     @FXML
     private AnchorPane Pane;
-
-    @FXML
-    private TextField fField;
-
+   
     @FXML
     private TextField resultName;
 
@@ -51,41 +42,52 @@ public class RecoverController {
     private LineChart<Number, Number> SampledSignalChart;
     private XYChart OriginalSignalChart;
 
+    @Override
     void init(MainController aThis) {
+
         final NumberAxis xAxis1 = new NumberAxis();
         final NumberAxis yAxis1 = new NumberAxis();
         OriginalSignalChart = new ScatterChart<>(xAxis1, yAxis1);
-        OriginalSignalChart.setMinWidth(850);
-        OriginalSignalChart.setMinHeight(340);
-        OriginalSignalChart.setMaxHeight(340);
-        OriginalSignalChart.setLayoutX(340);
-        OriginalSignalChart.setLayoutY(60);
-        Pane.getChildren().add(OriginalSignalChart);
+        Methods.setNodeCoordinates(OriginalSignalChart, 340, 60);
+        Methods.setChartSize(OriginalSignalChart, 850, 340);
+        
+
         final NumberAxis xAxis2 = new NumberAxis();
         final NumberAxis yAxis2 = new NumberAxis();
         SampledSignalChart = new LineChart<>(xAxis2, yAxis2);
         SampledSignalChart.setCreateSymbols(false);
-        SampledSignalChart.setMinWidth(850);
-        SampledSignalChart.setMinHeight(340);
-        SampledSignalChart.setLayoutX(340);
-        SampledSignalChart.setMaxHeight(340);
-        SampledSignalChart.setLayoutY(400);
+        Methods.setNodeCoordinates(SampledSignalChart, 340, 400);
+        Methods.setChartSize(SampledSignalChart, 850, 340);
+
+        Pane.getChildren().add(OriginalSignalChart);
         Pane.getChildren().add(SampledSignalChart);
-        MainController = aThis;
+        super.init(aThis);
         MethodsList.getItems().addAll("r0", "r1");
+
     }
 
     @FXML
     void showOriginalSignal() {
-        String SignalToFind = this.signalList.getSelectionModel().
-                getSelectedItem();
-        Signal FoundSignal = MainController.signals.get(SignalToFind);
-        //Add points to diagram
-        XYChart.Series<Number, Number> series = new XYChart.Series();
-        series.setName(SignalToFind);
-        Methods.addPointToSeries(series, FoundSignal);
-        OriginalSignalChart.getData().clear();
-        OriginalSignalChart.getData().add(series);
+        try {
+            String SignalToFind = this.signalList.getSelectionModel().
+                    getSelectedItem();
+            Signal FoundSignal = MainController.signals.get(SignalToFind);
+            //Add points to diagram
+            XYChart.Series<Number, Number> series = new XYChart.Series();
+            series.setName(SignalToFind);
+            Methods.addPointToSeries(series, FoundSignal);
+            OriginalSignalChart.getData().clear();
+            OriginalSignalChart.getData().add(series);
+        } catch (Exception e) {
+            Methods M = new Methods();
+            try {
+                M.showErrorBox("/fxml/CheckDataError.fxml");
+            } catch (IOException ex) {
+                Logger.getLogger(RecoverController.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
     @FXML
@@ -95,66 +97,13 @@ public class RecoverController {
         Signal FoundSignal = MainController.signals.get(SignalToFind);
         XYChart.Series<Number, Number> series = new XYChart.Series();
         Signal Result = new Signal();
-        Double a = FoundSignal.samples.firstKey();
-        Double b = FoundSignal.samples.lastKey();
         String SignalName = this.resultName.getText();
-        switch (MethodsList.getSelectionModel().getSelectedItem()) {
-            case "r0":
-                for (double i = a; i <= b; i += (b - a) / 100) {
-                    if (FoundSignal.samples.containsKey(i)) {
-                        series.getData().add(new XYChart.Data(i,
-                                FoundSignal.samples.get(i)));
-                        Result.samples.put(i, FoundSignal.samples.get(i));
-                    } else {
-                        series.getData().add(new XYChart.Data(i,
-                                FoundSignal.samples.get(FoundSignal.samples.
-                                        lowerKey(i))));
-                        Result.samples.put(i, FoundSignal.samples.
-                                get(FoundSignal.samples.lowerKey(i)));
-                    }
-                }
-                break;
-            case "r1":
-                for (double i = a; i <= b; i += (b - a) / 100) {
-                    if (FoundSignal.samples.containsKey(i)) {
-                        series.getData().add(new XYChart.Data(i,
-                                FoundSignal.samples.get(i)));
-                    } else {
-                        Double Res = Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
-                                FoundSignal.samples.higherKey(i),
-                                FoundSignal.samples.get(FoundSignal.samples.lowerKey(i)),
-                                FoundSignal.samples.get(FoundSignal.samples.higherKey(i)));
-                        System.out.println("X = " + i + ", Y = " + Res);
-                        series.getData().add(new XYChart.Data(i,
-                                Res));
-                        Result.samples.put(i, Res);
-                    }
-                }
-                break;
-        }
-        series.setName(SignalName);
+        previewAndOrRecoverSignal(series, Result, FoundSignal, true);
         boolean B = Methods.addSignalToMainBase(this.MainController.signals,
                 Result, SignalName);
         if (B == true) {
-            ArrayList<ObservableList<String>> places = new ArrayList<>();
-            places.add(MainController.displayController.SignalList.getItems());
-            places.add(MainController.simpleAddController.SignalAdd1.
-                    getItems());
-            places.add(MainController.simpleAddController.SignalAdd2.
-                    getItems());
-            places.add(MainController.filterController.SignalAdd1.
-                    getItems());
-            places.add(MainController.filterController.SignalAdd2.
-                    getItems());
-            places.add(MainController.startController.SignalList.getItems());
-            places.add(MainController.samplingController.signalList.
-                    getItems());
-            places.add(MainController.recoverController.signalList.getItems());
-            places.add(MainController.quantiController.signalList.
-                    getItems());
+            ArrayList<ObservableList<String>> places = super.getSignalLists();
             Methods.addSignal(places, SignalName);
-            SampledSignalChart.getData().clear();
-            SampledSignalChart.getData().add(series);
         } else {
             try {
                 Methods M = new Methods();
@@ -168,11 +117,26 @@ public class RecoverController {
 
     @FXML
     void previewRecoveredSignal() {
-        String SignalToFind = this.signalList.getSelectionModel().
-                getSelectedItem();
-        Signal FoundSignal = MainController.signals.get(SignalToFind);
-        XYChart.Series<Number, Number> series = new XYChart.Series();
+        try {
+            String SignalToFind = this.signalList.getSelectionModel().
+                    getSelectedItem();
+            Signal FoundSignal = MainController.signals.get(SignalToFind);
+            XYChart.Series<Number, Number> series = new XYChart.Series();
+            previewAndOrRecoverSignal(series, FoundSignal, FoundSignal, false);
+        } catch (Exception e) {
+            try {
+                Methods M = new Methods();
+                M.showErrorBox("/fxml/CheckDataError.fxml");
+            } catch (IOException ex) {
+                Logger.getLogger(RecoverController.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
 
+        }
+    }
+
+    private void previewAndOrRecoverSignal(XYChart.Series<Number, Number> series,
+            Signal Result, Signal FoundSignal, boolean loadFlag) {
         Double a = FoundSignal.samples.firstKey();
         Double b = FoundSignal.samples.lastKey();
         String SignalName = this.resultName.getText();
@@ -182,10 +146,17 @@ public class RecoverController {
                     if (FoundSignal.samples.containsKey(i)) {
                         series.getData().add(new XYChart.Data(i,
                                 FoundSignal.samples.get(i)));
+                        if (loadFlag) {
+                            Result.samples.put(i, FoundSignal.samples.get(i));
+                        }
                     } else {
                         series.getData().add(new XYChart.Data(i,
                                 FoundSignal.samples.get(FoundSignal.samples.
                                         lowerKey(i))));
+                        if (loadFlag) {
+                            Result.samples.put(i, FoundSignal.samples.
+                                    get(FoundSignal.samples.lowerKey(i)));
+                        }
                     }
                 }
                 break;
@@ -194,14 +165,19 @@ public class RecoverController {
                     if (FoundSignal.samples.containsKey(i)) {
                         series.getData().add(new XYChart.Data(i,
                                 FoundSignal.samples.get(i)));
+                        if (loadFlag) {
+                            Result.samples.put(i, FoundSignal.samples.get(i));
+                        }
                     } else {
                         Double Res = Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
                                 FoundSignal.samples.higherKey(i),
                                 FoundSignal.samples.get(FoundSignal.samples.lowerKey(i)),
                                 FoundSignal.samples.get(FoundSignal.samples.higherKey(i)));
-                        System.out.println("X = " + i + ", Y = " + Res);
                         series.getData().add(new XYChart.Data(i,
                                 Res));
+                        if (loadFlag) {
+                            Result.samples.put(i, Res);
+                        }
                     }
                 }
                 break;
@@ -210,5 +186,4 @@ public class RecoverController {
         SampledSignalChart.getData().clear();
         SampledSignalChart.getData().add(series);
     }
-
 }
