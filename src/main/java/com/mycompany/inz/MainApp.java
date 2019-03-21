@@ -6,8 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import org.apache.commons.math3.complex.Complex;
 
+import org.apache.commons.math3.complex.ComplexFormat;
 
 public class MainApp extends Application {
 
@@ -19,7 +20,7 @@ public class MainApp extends Application {
         stage.setResizable(false);
         stage.setTitle("Signal computation and visualisation");
         stage.setScene(scene);
-       
+
         stage.show();
     }
 
@@ -32,7 +33,14 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        ComplexFormat format = new ComplexFormat();
+        Complex c = new Complex(1.1111, 2.2222);
+        String s = format.format(c);
+        System.out.println(s);
+        c = format.parse(s);
+         System.out.println(c.getImaginary()+" , "+c.getReal());
         launch(args);
+
     }
 
 }

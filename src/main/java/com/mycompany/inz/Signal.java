@@ -1,6 +1,7 @@
 package com.mycompany.inz;
 
 import java.util.TreeMap;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -8,7 +9,7 @@ import java.util.TreeMap;
  */
 public class Signal {
 
-    public TreeMap<Double, Double> samples;
+    public TreeMap<Double, Complex> samples;
 
     public Signal() {
         this.samples = new TreeMap();

@@ -234,12 +234,12 @@ public class QuantiController extends AbstractMain {
                 }
             }
             if (loadFlag) {
-                MSE = MSE + Math.abs(FoundSignal.samples.get(i) - Result.samples.get(i))
-                        * Math.abs(FoundSignal.samples.get(i) - Result.samples.get(i));
-                SNRhelp = SNRhelp + Math.abs(FoundSignal.samples.get(i)) * Math.abs(
-                        FoundSignal.samples.get(i));
-                if (Math.abs(FoundSignal.samples.get(i) - Result.samples.get(i)) > MD) {
-                    MD = Math.abs(FoundSignal.samples.get(i) - Result.samples.get(i));
+                MSE = MSE + Math.abs(FoundSignal.samples.get(i).abs() - Result.samples.get(i).abs())
+                        * Math.abs(FoundSignal.samples.get(i).abs() - Result.samples.get(i).abs());
+                SNRhelp = SNRhelp + Math.abs(FoundSignal.samples.get(i).abs()) * Math.abs(
+                        FoundSignal.samples.get(i).abs());
+                if (Math.abs(FoundSignal.samples.get(i).abs() - Result.samples.get(i).abs()) > MD) {
+                    MD = Math.abs(FoundSignal.samples.get(i).abs() - Result.samples.get(i).abs());
                 }
             }
         }

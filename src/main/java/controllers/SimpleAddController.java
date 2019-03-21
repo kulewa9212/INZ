@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -193,8 +194,8 @@ public class SimpleAddController extends AbstractMain{
             Object[] ResultKeysTab = ResultKeys.toArray();
 
             for (Object elem : ResultKeysTab) {
-                Double ValueX;
-                Double ValueY;
+                Complex ValueX;
+                Complex ValueY;
                 Double entry = (Double) elem;
                 if (entry < a || entry > b) {
                     ResultKeys.remove(entry);
@@ -218,7 +219,7 @@ public class SimpleAddController extends AbstractMain{
                                 SignalY.samples.get(NextKey));
                     }
 
-                    Double Value = Methods.setSimpleActiom(AddChoice,
+                    Complex Value = Methods.setSimpleActiom(AddChoice,
                             ValueX, ValueY);
                     Result.samples.put(entry, Value);
                 }

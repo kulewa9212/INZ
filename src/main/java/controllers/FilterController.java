@@ -4,6 +4,7 @@ import com.mycompany.inz.Methods;
 import com.mycompany.inz.Signal;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,6 +17,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -136,26 +138,27 @@ public class FilterController extends AbstractMain {
                 getSelectedItem();
         Signal SignalX = MainController.signals.get(SignalXName);
         Signal SignalY = MainController.signals.get(SignalYName);
-        Iterator<Double> ValuesX = SignalX.samples.values().iterator();
-        List<Double> VX = new ArrayList<Double>();
+        Iterator<Complex> ValuesX = SignalX.samples.values().iterator();
+        Collection<Complex> VX = SignalX.samples.values();
+        new ArrayList<Complex>();
         for (int i = 0; i < SignalX.samples.size(); i++) {
-            VX.add(ValuesX.next());
+          //  VX.add(ValuesX.next());
         }
-        Iterator<Double> ValuesY = SignalY.samples.values().iterator();
-        List<Double> VY = new ArrayList<Double>();
+        Iterator<Complex> ValuesY = SignalY.samples.values().iterator();
+        List<Complex> VY = new ArrayList<Complex>();
         for (int i = 0; i < SignalY.samples.size(); i++) {
-            VY.add(ValuesY.next());
+         //   VY.add(ValuesY.next());
         }
         Double ax = SignalX.samples.firstKey();
         Double bx = SignalX.samples.lastKey();
         int ResultSize = SignalX.samples.size() + SignalY.samples.size() - 1;
         for (int i = 0; i < ResultSize; i++) {
-            double valueY = 0;
+            Complex valueY = new Complex(0.0, 0.0);
             for (int j = 0; j <= i; j++) {
                 if ((i - j) < 0 || j >= VX.size() || (i - j) >= VY.size()) {
-                    valueY += 0.0;
+                    valueY = valueY;
                 } else {
-                    valueY += VX.get(j) * VY.get(i - j);
+            //       valueY = valueY.plus(VX.get(j).times(VY.get(i - j)));
                 }
             }
             Result.samples.put(ax + i * ((bx - 1) / ResultSize), valueY);

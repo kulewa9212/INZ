@@ -27,6 +27,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.complex.ComplexFormat;
 
 public class StartController extends AbstractMain {
 
@@ -207,8 +209,9 @@ public class StartController extends AbstractMain {
             Signal S = new Signal();
             while (sR.hasNextLine()) {
                 String next = sR.nextLine();
-                S.samples.put(Double.parseDouble((String) next.split(";")[0]),
-                        Double.parseDouble((String) next.split(";")[1]));
+                S.samples.put(Double.parseDouble((String) next.split(";")[0].
+                        replace(",", ".")),
+                        new ComplexFormat().parse((String) next.split(";")[1]));
             }
             if (Methods.addSignalToMainBase(MainController.signals, S,
                     SignalName) == true) {
@@ -222,10 +225,13 @@ public class StartController extends AbstractMain {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(StartController.class.getName()).log(Level.SEVERE,
                     null, ex);
-        } catch (Exception e) {
+        }
+
+        /*catch (Exception e) {
             Methods M = new Methods();
             M.showErrorBox("/fxml/ErrorStartBox.fxml");
         }
+         */
     }
 
     @FXML
@@ -240,9 +246,14 @@ public class StartController extends AbstractMain {
                 keySet().iterator();
         while (Keys.hasNext()) {
             Double key = Keys.next();
+            ComplexFormat format = new ComplexFormat();
+            Complex h = this.MainController.signals.get(selectedSignal).samples.get(key);
             FileOutputStream fop = new FileOutputStream(selectedDirectory, true);
-            String line = key + " ; " + this.MainController.signals.
-                    get(selectedSignal).samples.get(key) + "\n";
+            String line = format.format(key) + ";" + format.format(h) + "\n";
+
+            //this.MainController.signals.
+            //get(selectedSignal).samples.get(key).getReal()+"+"+this.MainController.signals.
+            //get(selectedSignal).samples.get(key).getImaginary()+"i\n";
             fop.write(line.getBytes());
             fop.flush();
             fop.close();
@@ -459,7 +470,7 @@ public class StartController extends AbstractMain {
     private void probablyLoad(Signal S, double signalArgument,
             Double signalValue, boolean loadFlag) {
         if (loadFlag == true) {
-            S.samples.put(signalArgument, signalValue);
+            S.samples.put(signalArgument, new Complex(signalValue, 0.0));
         }
 
     }

@@ -15,6 +15,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -22,9 +23,13 @@ import javafx.stage.Stage;
  */
 public class Methods {
 
-    public static double assertValue(Double t, Double t0, Double t1, Double ft0,
-            Double ft1) {
-        return ((ft0 - ft1) / (t0 - t1)) * t + ft0 - ((t0 * (ft0 - ft1)) / (t0 - t1));
+    public static Complex assertValue(Double t, Double t0, Double t1,
+            Complex ft0, Complex ft1) {
+        Complex c1 = ft0.add(ft1.multiply(-1)).multiply(1 / (t0 - t1)).
+                multiply(t).add(ft0);
+        Complex c2 = ft0.add(ft1.multiply(-1)).multiply(t0).
+                multiply(1 / (t0 - t1));
+        return c1.add(c2.multiply(-1));
     }
 
     public static void removeSignal(List<ObservableList<String>> Arg, String S) {
@@ -72,27 +77,27 @@ public class Methods {
         Methods.setPreviewChart(SignalChart, series);
     }
 
-    public static Double setSimpleActiom(ComboBox<String> ComboArg,
-            Double ValueX, Double ValueY) {
+    public static Complex setSimpleActiom(ComboBox<String> ComboArg,
+            Complex ValueX, Complex ValueY) {
         switch (ComboArg.getSelectionModel().getSelectedItem()) {
             case "+":
-                return ValueX + ValueY;
+                return ValueX.add(ValueY);
             case "-":
-                return ValueX - ValueY;
+                return ValueX.add(ValueY.multiply(-1));
             case "*":
-                return ValueX * ValueY;
+                return ValueX.multiply(ValueY);
             default:
-                return 0.0;
+                return new Complex(0, 0);
         }
     }
 
     public static void addPointToSeries(XYChart.Series series,
             Signal SignalArg) {
         series.getData().clear();
-        Set<Map.Entry<Double, Double>> entrySet = SignalArg.samples.entrySet();
-        for (Map.Entry<Double, Double> entry : entrySet) {
+        Set<Map.Entry<Double, Complex>> entrySet = SignalArg.samples.entrySet();
+        for (Map.Entry<Double, Complex> entry : entrySet) {
             series.getData().add(new XYChart.Data(entry.getKey(),
-                    entry.getValue()));
+                    entry.getValue().abs()));
         }
     }
 
@@ -132,9 +137,9 @@ public class Methods {
         stage.setScene(scene);
         stage.show();
     }
-    
-    public static String readComboBoxValue(ComboBox<String> CB){
-    return CB.getSelectionModel().getSelectedItem();
+
+    public static String readComboBoxValue(ComboBox<String> CB) {
+        return CB.getSelectionModel().getSelectedItem();
     }
 
 }

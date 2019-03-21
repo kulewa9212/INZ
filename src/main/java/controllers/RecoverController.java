@@ -20,6 +20,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -169,7 +170,7 @@ public class RecoverController extends AbstractMain{
                             Result.samples.put(i, FoundSignal.samples.get(i));
                         }
                     } else {
-                        Double Res = Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
+                        Complex Res = Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
                                 FoundSignal.samples.higherKey(i),
                                 FoundSignal.samples.get(FoundSignal.samples.lowerKey(i)),
                                 FoundSignal.samples.get(FoundSignal.samples.higherKey(i)));

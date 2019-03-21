@@ -115,7 +115,7 @@ public class SamplingController extends AbstractMain{
         for (double i = a; i <= b; i += interval) {
             if (FoundSignal.samples.keySet().contains(i)) {
                 series.getData().add(new XYChart.Data(i,
-                        FoundSignal.samples.get(i)));
+                        FoundSignal.samples.get(i).abs()));
                 if (loadFlag) {
                     Result.samples.put(i, FoundSignal.samples.get(i));
                 }
@@ -126,7 +126,7 @@ public class SamplingController extends AbstractMain{
                                 FoundSignal.samples.get(FoundSignal.samples.
                                         lowerKey(i)),
                                 FoundSignal.samples.get(FoundSignal.samples.
-                                        higherKey(i)))));
+                                        higherKey(i))).abs()));
                 if (loadFlag) {
                     Result.samples.put(i, Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
                             FoundSignal.samples.higherKey(i),
