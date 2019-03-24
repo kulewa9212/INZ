@@ -4,31 +4,26 @@ import com.mycompany.inz.Methods;
 import com.mycompany.inz.Signal;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import org.apache.commons.math3.complex.Complex;
 
 /**
  *
  * @author Ewa Skrzypek
  */
-public class SimpleAddController extends AbstractMain{
+public class SimpleAddController extends AbstractMain {
 
     @FXML
     private AnchorPane SimpleAddPane;
@@ -47,51 +42,70 @@ public class SimpleAddController extends AbstractMain{
 
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
-    private LineChart<Number, Number> Signal1Chart;
-    private LineChart<Number, Number> Signal2Chart;
-    private LineChart<Number, Number> ResultChart;
+    private LineChart<Number, Number> Signal1ReChart;
+    private LineChart<Number, Number> Signal1ImChart;
+    private LineChart<Number, Number> Signal2ReChart;
+    private LineChart<Number, Number> Signal2ImChart;
+
+    private LineChart<Number, Number> resultReChart;
+    private LineChart<Number, Number> resultImChart;
 
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
     @Override
     void init(MainController aThis) {
-        
+
         super.init(aThis);
 
         this.AddChoice.getItems().add("+");
         this.AddChoice.getItems().add("*");
         this.AddChoice.getItems().add("-");
 
-        final NumberAxis x1Axis = new NumberAxis();
-        final NumberAxis y1Axis = new NumberAxis();
-        Signal1Chart = new LineChart<>(x1Axis, y1Axis);
-        Methods.setChartSize(Signal1Chart, 400, 280);
-        Methods.setNodeCoordinates(Signal1Chart, 25, 30);
-        Methods.setNodeCoordinates(SignalAdd1, 50, 320);
+        Signal1ReChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal1ReChart.setTitle("Signal 1 - Re");
+        Methods.setChartSize(Signal1ReChart, 390, 300);
+        Methods.setNodeCoordinates(Signal1ReChart, 25, 30);
+        Methods.setNodeCoordinates(SignalAdd1, 50, 350);
 
-        final NumberAxis x2Axis = new NumberAxis();
-        final NumberAxis y2Axis = new NumberAxis();
-        Signal2Chart = new LineChart<>(x2Axis, y2Axis);
-        Methods.setChartSize(Signal2Chart, 400, 280);
-        Methods.setNodeCoordinates(Signal2Chart, 500, 30);
-        Methods.setNodeCoordinates(SignalAdd2, 520, 320);
+        Signal1ImChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal1ImChart.setTitle("Signal 1 - Im");
+        Methods.setChartSize(Signal1ImChart, 390, 300);
+        Methods.setNodeCoordinates(Signal1ImChart, 390, 30);
 
-        final NumberAxis xRAxis = new NumberAxis();
-        final NumberAxis yRAxis = new NumberAxis();
-        ResultChart = new LineChart<>(xRAxis, yRAxis);
-        Methods.setChartSize(ResultChart, 700, 405);
-        Methods.setNodeCoordinates(ResultChart, 100, 370);
-        
-        SimpleAddPane.getChildren().add(Signal1Chart);
-        SimpleAddPane.getChildren().add(Signal2Chart);
-        SimpleAddPane.getChildren().add(ResultChart);
+        Signal2ReChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal2ReChart.setTitle("Signal 2 - Re");
+        Methods.setChartSize(Signal2ReChart, 390, 300);
+        Methods.setNodeCoordinates(Signal2ReChart, 820, 30);
+        Methods.setNodeCoordinates(SignalAdd2, 850, 350);
+
+        Signal2ImChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal2ImChart.setTitle("Signal 2 - Im");
+        Methods.setChartSize(Signal2ImChart, 390, 300);
+        Methods.setNodeCoordinates(Signal2ImChart, 1185, 30);
+
+        resultReChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        resultReChart.setTitle("Result signal - Re");
+        Methods.setChartSize(resultReChart, 740, 500);
+        Methods.setNodeCoordinates(resultReChart, 30, 440);
+
+        resultImChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        resultImChart.setTitle("Result signal - Im");
+        Methods.setChartSize(resultImChart, 740, 500);
+        Methods.setNodeCoordinates(resultImChart, 800, 440);
+
+        SimpleAddPane.getChildren().add(Signal1ReChart);
+        SimpleAddPane.getChildren().add(Signal1ImChart);
+        SimpleAddPane.getChildren().add(Signal2ReChart);
+        SimpleAddPane.getChildren().add(Signal2ImChart);
+        SimpleAddPane.getChildren().add(resultReChart);
+        SimpleAddPane.getChildren().add(resultImChart);
     }
 
     public void preview() throws IOException {
         try {
             //-----------------for SX signal----------------------------
-            previewSignal(SignalAdd1, Signal1Chart);
-            previewSignal(SignalAdd2, Signal2Chart);
+            previewSignal(SignalAdd1, Signal1ReChart, Signal1ImChart);
+            previewSignal(SignalAdd2, Signal2ReChart, Signal2ImChart);
             //-----------------for SY signal----------------------------
             String SignalYName = Methods.readComboBoxValue(SignalAdd2);
             String SignalXName = Methods.readComboBoxValue(SignalAdd1);
@@ -99,14 +113,22 @@ public class SimpleAddController extends AbstractMain{
             Signal SignalY = MainController.signals.get(SignalYName);
             Signal Result = new Signal();
             prepareResultSignal(SignalX, SignalY, Result);
-            XYChart.Series<Number, Number> series = new XYChart.Series();
+            XYChart.Series<Number, Number> reSeries = new XYChart.Series();
             String addedSignalName = resultNameField.getText();
-            series.setName(addedSignalName);
-            Methods.addPointToSeries(series, Result);
-            ResultChart.setCreateSymbols(false);
-            ResultChart.setLegendVisible(true);
-            ResultChart.getData().clear();
-            ResultChart.getData().add(series);
+            reSeries.setName(addedSignalName);
+            Methods.addRePointToSeries(reSeries, Result);
+            resultReChart.setCreateSymbols(false);
+            resultReChart.setLegendVisible(true);
+            resultReChart.getData().clear();
+            resultReChart.getData().add(reSeries);
+            
+            XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+            imSeries.setName(addedSignalName);
+            Methods.addImPointToSeries(imSeries, Result);
+            resultImChart.setCreateSymbols(false);
+            resultImChart.setLegendVisible(true);
+            resultImChart.getData().clear();
+            resultImChart.getData().add(imSeries);
         } catch (NullPointerException e) {
             Methods M = new Methods();
             M.showErrorBox("/fxml/OperationError.fxml");
@@ -118,22 +140,25 @@ public class SimpleAddController extends AbstractMain{
     }
 
     public void previewSignals() throws IOException {
-        previewSignal(SignalAdd1, Signal1Chart);
-        previewSignal(SignalAdd2, Signal2Chart);
+        previewSignal(SignalAdd1, Signal1ReChart, Signal1ImChart);
+        previewSignal(SignalAdd2, Signal2ReChart, Signal2ImChart);
     }
 
     @FXML
     private void cleanPreview() {
         ArrayList<XYChart> ChartsToClear = new ArrayList<>();
-        ChartsToClear.add(Signal1Chart);
-        ChartsToClear.add(Signal2Chart);
+        ChartsToClear.add(Signal1ReChart);
+        ChartsToClear.add(Signal2ReChart);
+        ChartsToClear.add(Signal1ImChart);
+        ChartsToClear.add(Signal2ImChart);
         Methods.clearCharts(ChartsToClear);
     }
 
     @FXML
     private void cleanResult() {
         ArrayList<XYChart> ChartsToClear = new ArrayList<>();
-        ChartsToClear.add(ResultChart);
+        ChartsToClear.add(resultReChart);
+        ChartsToClear.add(resultImChart);
         Methods.clearCharts(ChartsToClear);
     }
 
@@ -147,18 +172,27 @@ public class SimpleAddController extends AbstractMain{
             Signal SignalY = MainController.signals.get(SignalYName);
             Signal Result = new Signal();
             prepareResultSignal(SignalX, SignalY, Result);
-            XYChart.Series<Number, Number> series = new XYChart.Series();
+            XYChart.Series<Number, Number> reSeries = new XYChart.Series();
+             XYChart.Series<Number, Number> imSeries = new XYChart.Series();
             String addedSignalName = resultNameField.getText();
-            series.setName(addedSignalName);
+            reSeries.setName(addedSignalName);
+            imSeries.setName(addedSignalName);
             if (Methods.addSignalToMainBase(this.MainController.signals, Result, addedSignalName)) {
-                ArrayList<ObservableList<String>> places = 
-                        super.getSignalLists();
+                ArrayList<ObservableList<String>> places
+                        = super.getSignalLists();
                 Methods.addSignal(places, addedSignalName);
-                Methods.addPointToSeries(series, Result);
-                ResultChart.setCreateSymbols(false);
-                ResultChart.setLegendVisible(true);
-                ResultChart.getData().clear();
-                ResultChart.getData().add(series);
+                Methods.addRePointToSeries(reSeries, Result);
+                Methods.addImPointToSeries(imSeries, Result);
+                
+                resultReChart.setCreateSymbols(false);
+                resultReChart.setLegendVisible(true);
+                resultReChart.getData().clear();
+                resultReChart.getData().add(reSeries);
+            
+                resultImChart.setCreateSymbols(false);
+                resultImChart.setLegendVisible(true);
+                resultImChart.getData().clear();
+                resultImChart.getData().add(imSeries);
             } else {
                 try {
                     Methods M = new Methods();
@@ -228,13 +262,14 @@ public class SimpleAddController extends AbstractMain{
         }
     }
 
-    private void previewSignal(ComboBox<String> CB, LineChart<Number, Number> LC) throws IOException {
+    private void previewSignal(ComboBox<String> CB, LineChart<Number, Number> ReLC, LineChart<Number, Number> ImLC) throws IOException {
         try {
             //-----------------for SX signal----------------------------
             String Signal1ToFind = CB.getSelectionModel().
                     getSelectedItem();
-            LC.getData().clear();
-            Methods.addToPreviewWindowSimpleAdd(MainController, LC,
+            ReLC.getData().clear();
+            ImLC.getData().clear();
+            Methods.addToPreviewWindowSimpleAdd(MainController, ReLC, ImLC,
                     Signal1ToFind);
         } catch (Exception e) {
             Methods M = new Methods();

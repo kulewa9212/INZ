@@ -33,12 +33,6 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ComplexFormat format = new ComplexFormat();
-        Complex c = new Complex(1.1111, 2.2222);
-        String s = format.format(c);
-        System.out.println(s);
-        c = format.parse(s);
-         System.out.println(c.getImaginary()+" , "+c.getReal());
         launch(args);
 
     }

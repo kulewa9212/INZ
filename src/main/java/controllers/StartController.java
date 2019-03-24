@@ -111,8 +111,8 @@ public class StartController extends AbstractMain {
         final NumberAxis yAxis = new NumberAxis();
         PreviewChart = new LineChart<>(xAxis, yAxis);
         PreviewChart.setCreateSymbols(false);
-        Methods.setNodeCoordinates(PreviewChart, 280, 335);
-        Methods.setChartSize(PreviewChart, 610, 440);
+        Methods.setNodeCoordinates(PreviewChart, 310, 355);
+        Methods.setChartSize(PreviewChart, 1160, 560);
 
         SelectedSignal = SignalShape.NONSIGNAL;
 
@@ -225,13 +225,11 @@ public class StartController extends AbstractMain {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(StartController.class.getName()).log(Level.SEVERE,
                     null, ex);
-        }
-
-        /*catch (Exception e) {
+        } catch (Exception e) {
             Methods M = new Methods();
             M.showErrorBox("/fxml/ErrorStartBox.fxml");
         }
-         */
+
     }
 
     @FXML
@@ -451,8 +449,8 @@ public class StartController extends AbstractMain {
                             if ((i > l * Period) && (i < kwr * Period + l * Period + a)) {
                                 signalValue = A;
                                 series.getData().add(new XYChart.Data(i, signalValue));
-                            } else if ((i >= kwr * Period + l * Period + a)
-                                    && (i <= Period + l * Period + a)) {
+                            } else if ((i > kwr * Period + l * Period + a)
+                                    && (i < Period + l * Period + a)) {
                                 signalValue = -A;
                                 series.getData().add(new XYChart.Data(i, signalValue));
                             } else if (i > Period + l * Period + a) {

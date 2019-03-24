@@ -10,6 +10,8 @@ import com.mycompany.inz.Signal;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.apache.commons.math3.complex.Complex;
 
 /**
  *
@@ -44,8 +47,11 @@ public class QuantiController extends AbstractMain {
     @FXML
     ComboBox<String> methodsList;
 
-    private LineChart<Number, Number> SampledSignalChart;
-    private XYChart OriginalSignalChart;
+    private LineChart<Number, Number> sampledReSignalChart;
+    private LineChart<Number, Number> sampledImSignalChart;
+
+    private XYChart OriginalReSignalChart;
+    private XYChart OriginalImSignalChart;
 
     @FXML
     protected ListView<String> parameters;
@@ -53,24 +59,39 @@ public class QuantiController extends AbstractMain {
     @Override
     void init(MainController aThis) {
 
-        final NumberAxis xAxis1 = new NumberAxis();
-        final NumberAxis yAxis1 = new NumberAxis();
-        OriginalSignalChart = new ScatterChart<>(xAxis1, yAxis1);
-        Methods.setChartSize(OriginalSignalChart, 850, 370);
-        Methods.setNodeCoordinates(OriginalSignalChart, 330, 40);
+        OriginalReSignalChart = new ScatterChart<>(new NumberAxis(),
+                new NumberAxis());
+        OriginalReSignalChart.setTitle("Original signal - Re");
+        Methods.setChartSize(OriginalReSignalChart, 710, 450);
+        Methods.setNodeCoordinates(OriginalReSignalChart, 350, 40);
 
-        final NumberAxis xAxis2 = new NumberAxis();
-        final NumberAxis yAxis2 = new NumberAxis();
-        SampledSignalChart = new LineChart<>(xAxis2, yAxis2);
-        SampledSignalChart.setCreateSymbols(false);
-        Methods.setChartSize(SampledSignalChart, 850, 370);
-        Methods.setNodeCoordinates(SampledSignalChart, 330, 400);
+        OriginalImSignalChart = new ScatterChart<>(new NumberAxis(),
+                new NumberAxis());
+        OriginalImSignalChart.setTitle("Original signal - Im");
+        Methods.setChartSize(OriginalImSignalChart, 710, 450);
+        Methods.setNodeCoordinates(OriginalImSignalChart, 1110, 40);
 
-        Pane.getChildren().add(OriginalSignalChart);
-        Pane.getChildren().add(SampledSignalChart);
-        
+        sampledReSignalChart = new LineChart<>(new NumberAxis(),
+                new NumberAxis());
+        sampledReSignalChart.setCreateSymbols(false);
+        sampledReSignalChart.setTitle("Quanted signal - Re");
+        Methods.setChartSize(sampledReSignalChart, 710, 450);
+        Methods.setNodeCoordinates(sampledReSignalChart, 350, 490);
+
+        sampledImSignalChart = new LineChart<>(new NumberAxis(),
+                new NumberAxis());
+        sampledImSignalChart.setCreateSymbols(false);
+        sampledImSignalChart.setTitle("Quanted signal - Im");
+        Methods.setChartSize(sampledImSignalChart, 710, 450);
+        Methods.setNodeCoordinates(sampledImSignalChart, 1110, 490);
+
+        Pane.getChildren().add(OriginalReSignalChart);
+        Pane.getChildren().add(OriginalImSignalChart);
+        Pane.getChildren().add(sampledReSignalChart);
+        Pane.getChildren().add(sampledImSignalChart);
+
         super.init(aThis);
-        
+
         methodsList.getItems().addAll("decrease", "round");
         parameters.setVisible(false);
     }
@@ -81,11 +102,29 @@ public class QuantiController extends AbstractMain {
                 getSelectedItem();
         Signal FoundSignal = MainController.signals.get(SignalToFind);
         //Add points to diagram
-        XYChart.Series<Number, Number> series = new XYChart.Series();
-        series.setName(SignalToFind);
-        Methods.addPointToSeries(series, FoundSignal);
-        OriginalSignalChart.getData().clear();
-        OriginalSignalChart.getData().add(series);
+
+        XYChart.Series<Number, Number> reSeries = new XYChart.Series();
+        reSeries.setName(SignalToFind);
+
+        reSeries.getData().clear();
+        Set<Map.Entry<Double, Complex>> entrySet = FoundSignal.samples.entrySet();
+        for (Map.Entry<Double, Complex> entry : entrySet) {
+            reSeries.getData().add(new XYChart.Data(entry.getKey(),
+                    entry.getValue().getReal()));
+        }
+        OriginalReSignalChart.getData().clear();
+        OriginalReSignalChart.getData().add(reSeries);
+
+        XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+        imSeries.setName(SignalToFind);
+        imSeries.getData().clear();
+        for (Map.Entry<Double, Complex> entry : entrySet) {
+            imSeries.getData().add(new XYChart.Data(entry.getKey(),
+                    entry.getValue().getImaginary()));
+        }
+        OriginalImSignalChart.getData().clear();
+        OriginalImSignalChart.getData().add(imSeries);
+
     }
 
     @FXML
@@ -93,20 +132,24 @@ public class QuantiController extends AbstractMain {
         String SignalToFind = this.signalList.getSelectionModel().
                 getSelectedItem();
         Signal FoundSignal = MainController.signals.get(SignalToFind);
-        XYChart.Series<Number, Number> series = new XYChart.Series();
+        XYChart.Series<Number, Number> reSeries = new XYChart.Series();
+        XYChart.Series<Number, Number> imSeries = new XYChart.Series();
         Signal Result1 = new Signal();
-        previewAndOrSampleSignal(series, Result1, FoundSignal, true);
+        previewAndOrSampleSignal(reSeries, imSeries, Result1, FoundSignal, true);
         Signal Result = new Signal();
-        quantize(series, Result, Result1, true);
+        quantize(reSeries, imSeries, Result, Result1, true);
         String SignalName = this.resultName.getText();
-        series.setName(SignalName);
+        reSeries.setName(SignalName);
         boolean B = Methods.addSignalToMainBase(this.MainController.signals,
                 Result, SignalName);
         if (B == true) {
             ArrayList<ObservableList<String>> places = super.getSignalLists();
             Methods.addSignal(places, SignalName);
-            SampledSignalChart.getData().clear();
-            SampledSignalChart.getData().add(series);
+            sampledReSignalChart.getData().clear();
+            sampledReSignalChart.getData().add(reSeries);
+            
+            sampledImSignalChart.getData().clear();
+            sampledImSignalChart.getData().add(imSeries);
         } else {
             try {
                 Methods M = new Methods();
@@ -124,40 +167,55 @@ public class QuantiController extends AbstractMain {
                 getSelectedItem();
         Signal FoundSignal = MainController.signals.get(SignalToFind);
         Signal Result1 = new Signal();
-        XYChart.Series<Number, Number> series = new XYChart.Series();
-        previewAndOrSampleSignal(series, Result1, FoundSignal, true);
-        quantize(series, new Signal(), Result1, false);
-        SampledSignalChart.getData().clear();
-        SampledSignalChart.getData().add(series);
+        XYChart.Series<Number, Number> reSeries = new XYChart.Series();
+        XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+        previewAndOrSampleSignal(reSeries, imSeries, Result1, FoundSignal, true);
+        quantize(reSeries, imSeries, new Signal(), Result1, false);
+        sampledReSignalChart.getData().clear();
+        sampledReSignalChart.getData().add(reSeries);
+        sampledImSignalChart.getData().clear();
+        sampledImSignalChart.getData().add(imSeries);
     }
 
     @FXML
     void clean() {
         parameters.setVisible(false);
-        OriginalSignalChart.getData().clear();
-        SampledSignalChart.getData().clear();
+        OriginalReSignalChart.getData().clear();
+        OriginalImSignalChart.getData().clear();
+        sampledReSignalChart.getData().clear();
+        sampledImSignalChart.getData().clear();
     }
 
-    private void previewAndOrSampleSignal(XYChart.Series<Number, Number> series,
+    private void previewAndOrSampleSignal(XYChart.Series<Number, Number> reSeries,
+            XYChart.Series<Number, Number> imSeries,
             Signal Result, Signal FoundSignal, boolean loadFlag) {
         Double interval = Double.parseDouble(fField.getText());
         Double a = FoundSignal.samples.firstKey();
         Double b = FoundSignal.samples.lastKey();
         for (double i = a; i <= b; i += interval) {
             if (FoundSignal.samples.keySet().contains(i)) {
-                series.getData().add(new XYChart.Data(i,
-                        FoundSignal.samples.get(i)));
+                reSeries.getData().add(new XYChart.Data(i,
+                        FoundSignal.samples.get(i).getReal()));
+                imSeries.getData().add(new XYChart.Data(i,
+                        FoundSignal.samples.get(i).getImaginary()));
                 if (loadFlag) {
                     Result.samples.put(i, FoundSignal.samples.get(i));
                 }
             } else {
-                series.getData().add(new XYChart.Data(i,
+                reSeries.getData().add(new XYChart.Data(i,
                         Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
                                 FoundSignal.samples.higherKey(i),
                                 FoundSignal.samples.get(FoundSignal.samples.
                                         lowerKey(i)),
                                 FoundSignal.samples.get(FoundSignal.samples.
-                                        higherKey(i)))));
+                                        higherKey(i))).getReal()));
+                imSeries.getData().add(new XYChart.Data(i,
+                        Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
+                                FoundSignal.samples.higherKey(i),
+                                FoundSignal.samples.get(FoundSignal.samples.
+                                        lowerKey(i)),
+                                FoundSignal.samples.get(FoundSignal.samples.
+                                        higherKey(i))).getImaginary()));
                 if (loadFlag) {
                     Result.samples.put(i, Methods.assertValue(i, FoundSignal.samples.lowerKey(i),
                             FoundSignal.samples.higherKey(i),
@@ -168,14 +226,18 @@ public class QuantiController extends AbstractMain {
                 }
             }
         }
-        series.getData().add(new XYChart.Data(b,
-                FoundSignal.samples.get(b)));
+        reSeries.getData().add(new XYChart.Data(b,
+                FoundSignal.samples.get(b).getReal()));
+        imSeries.getData().add(new XYChart.Data(b,
+                FoundSignal.samples.get(b).getImaginary()));
         Result.samples.put(b, FoundSignal.samples.get(b));
         String SignalName = this.resultName.getText();
-        series.setName(SignalName);
+        reSeries.setName(SignalName);
+        imSeries.setName(SignalName);
     }
 
-    private void quantize(XYChart.Series<Number, Number> series,
+    private void quantize(XYChart.Series<Number, Number> reSeries,
+            XYChart.Series<Number, Number> imSeries,
             Signal Result, Signal Result1, boolean loadFlag) {
         String SignalToFind = this.signalList.getSelectionModel().
                 getSelectedItem();
@@ -189,41 +251,58 @@ public class QuantiController extends AbstractMain {
         while (iterator.hasNext()) {
             Double i = iterator.next();
             if (Result1.samples.containsKey(i)) {
-                series.getData().add(new XYChart.Data(i,
-                        Result1.samples.get(i)));
+                reSeries.getData().add(new XYChart.Data(i,
+                        Result1.samples.get(i).getReal()));
+                imSeries.getData().add(new XYChart.Data(i,
+                        Result1.samples.get(i).getImaginary()));
                 if (loadFlag) {
                     Result.samples.put(i, Result1.samples.get(i));
                 }
             } else {
                 if ("decrease".equals(method)) {
-                    series.getData().add(new XYChart.Data(i,
+                    reSeries.getData().add(new XYChart.Data(i,
                             Result1.samples.get(Result1.samples.
-                                    lowerKey(i))));
+                                    lowerKey(i)).getReal()));
+                    imSeries.getData().add(new XYChart.Data(i,
+                            Result1.samples.get(Result1.samples.
+                                    lowerKey(i)).getImaginary()));
                     if (loadFlag) {
                         Result.samples.put(i, Result1.samples.
                                 get(Result1.samples.lowerKey(i)));
                     }
                 } else if ("round".equals(method)) {
                     if (i - Result1.samples.lowerKey(i) <= 0.5 * interval) {
-                        series.getData().add(new XYChart.Data(i,
+                        reSeries.getData().add(new XYChart.Data(i,
                                 Result1.samples.get(Result1.samples.
-                                        lowerKey(i))));
+                                        lowerKey(i)).getReal()));
+                        imSeries.getData().add(new XYChart.Data(i,
+                                Result1.samples.get(Result1.samples.
+                                        lowerKey(i)).getImaginary()));
                         if (loadFlag) {
                             Result.samples.put(i, Result1.samples.
                                     get(Result1.samples.lowerKey(i)));
                         }
                     } else {
                         try {
-                            series.getData().add(new XYChart.Data(i,
+                            reSeries.getData().add(new XYChart.Data(i,
                                     Result1.samples.get(Result1.samples.
-                                            higherKey(i))));
+                                            higherKey(i)).getReal()));
+                            imSeries.getData().add(new XYChart.Data(i,
+                                    Result1.samples.get(Result1.samples.
+                                            higherKey(i)).getImaginary()));
                             if (loadFlag) {
                                 Result.samples.put(i, Result1.samples.
                                         get(Result1.samples.higherKey(i)));
                             }
                         } catch (Exception e) {
-                            series.getData().add(new XYChart.Data(i,
-                                    Result1.samples.get(Result1.samples.lowerKey(i))));
+                            reSeries.getData().add(new XYChart.Data(i,
+                                    Result1.samples.get(
+                                            Result1.samples.lowerKey(i)).
+                                            getReal()));
+                            imSeries.getData().add(new XYChart.Data(i,
+                                    Result1.samples.get(
+                                            Result1.samples.lowerKey(i)).
+                                            getImaginary()));
                             if (loadFlag) {
                                 Result.samples.put(i, Result1.samples.
                                         get(Result1.samples.lowerKey(i)));
@@ -250,7 +329,7 @@ public class QuantiController extends AbstractMain {
             parameters.setVisible(true);
             parameters.getItems().clear();
             parameters.getItems().add("Signal name                 :      "
-                    + series.getName());
+                    + reSeries.getName());
             parameters.getItems().add("Original signal name    :      "
                     + SignalToFind);
             parameters.getItems().add("MSE                              :      "

@@ -8,12 +8,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="DisplayPane" prefHeight="638.0" prefWidth="1224.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DisplayController">
+<AnchorPane id="AnchorPane" fx:id="DisplayPane" prefHeight="990.0" prefWidth="2120.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DisplayController">
    <children>
       <ComboBox fx:id="SignalList" layoutX="36.0" layoutY="55.0" prefHeight="54.0" prefWidth="274.0" />
-      <Button layoutX="36.0" layoutY="153.0" mnemonicParsing="false" onMouseClicked="#addToChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Display" />
-      <Button layoutX="36.0" layoutY="213.0" mnemonicParsing="false" onMouseClicked="#removeSignal" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Remove" />
-      <Button layoutX="36.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#cleanSignalChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Clean " />
-      <ListView fx:id="parameters" layoutX="36.0" layoutY="550.0" prefHeight="147.0" prefWidth="274.0" />
+      <Button layoutX="36.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#addToChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Display" />
+      <Button layoutX="36.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#removeSignal" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Remove" />
+      <Button layoutX="36.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#cleanSignalChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Clean " />
+      <ListView fx:id="parameters" layoutX="36.0" layoutY="543.0" prefHeight="147.0" prefWidth="274.0" />
    </children>
 </AnchorPane>

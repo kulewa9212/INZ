@@ -38,9 +38,12 @@ public class FilterController extends AbstractMain {
 
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
-    private LineChart<Number, Number> Signal1Chart;
-    private LineChart<Number, Number> Signal2Chart;
-    private LineChart<Number, Number> ResultChart;
+    private LineChart<Number, Number> Signal1ReChart;
+    private LineChart<Number, Number> Signal1ImChart;
+    private LineChart<Number, Number> Signal2ReChart;
+    private LineChart<Number, Number> Signal2ImChart;
+    private LineChart<Number, Number> resultReChart;
+    private LineChart<Number, Number> resultImChart;
 
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -48,41 +51,64 @@ public class FilterController extends AbstractMain {
     void init(MainController aThis) {
         super.init(aThis);
 
-        final NumberAxis x1Axis = new NumberAxis();
-        final NumberAxis y1Axis = new NumberAxis();
-        Signal1Chart = new LineChart<>(x1Axis, y1Axis);
-        Methods.setChartSize(Signal1Chart, 400, 280);
-        Methods.setNodeCoordinates(Signal1Chart, 25, 30);
-        Methods.setNodeCoordinates(SignalAdd1, 50, 320);
+        Signal1ReChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal1ReChart.setTitle("Signal 1 - Re");
+        Methods.setChartSize(Signal1ReChart, 390, 300);
+        Methods.setNodeCoordinates(Signal1ReChart, 25, 30);
+        Methods.setNodeCoordinates(SignalAdd1, 50, 350);
 
-        final NumberAxis x2Axis = new NumberAxis();
-        final NumberAxis y2Axis = new NumberAxis();
-        Signal2Chart = new LineChart<>(x2Axis, y2Axis);
-        Methods.setChartSize(Signal2Chart, 400, 280);
-        Methods.setNodeCoordinates(Signal2Chart, 500, 30);
-        Methods.setNodeCoordinates(SignalAdd2, 520, 320);
+        Signal1ImChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal1ImChart.setTitle("Signal 1 - Im");
+        Methods.setChartSize(Signal1ImChart, 390, 300);
+        Methods.setNodeCoordinates(Signal1ImChart, 390, 30);
+  
+        Signal2ReChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal2ReChart.setTitle("Signal 2 - Re");
+        Methods.setChartSize(Signal2ReChart, 390, 300);
+        Methods.setNodeCoordinates(Signal2ReChart, 820, 30);
+        Methods.setNodeCoordinates(SignalAdd2, 850, 350);
+        
+        Signal2ImChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        Signal2ImChart.setTitle("Signal 2 - Im");
+        Methods.setChartSize(Signal2ImChart, 390, 300);
+        Methods.setNodeCoordinates(Signal2ImChart, 1185, 30);
+   
+        resultReChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        resultReChart.setTitle("Result signal - Re");
+        Methods.setChartSize(resultReChart, 740, 500);
+        Methods.setNodeCoordinates(resultReChart, 30, 440);
 
-        final NumberAxis xRAxis = new NumberAxis();
-        final NumberAxis yRAxis = new NumberAxis();
-        ResultChart = new LineChart<>(xRAxis, yRAxis);
-        Methods.setChartSize(ResultChart, 700, 405);
-        Methods.setNodeCoordinates(ResultChart, 100, 370);
+        resultImChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        resultImChart.setTitle("Result signal - Im");
+        Methods.setChartSize(resultImChart, 740, 500);
+        Methods.setNodeCoordinates(resultImChart, 800, 440);
 
-        SimpleAddPane.getChildren().add(Signal1Chart);
-        SimpleAddPane.getChildren().add(Signal2Chart);
-        SimpleAddPane.getChildren().add(ResultChart);
+        SimpleAddPane.getChildren().add(Signal1ReChart);
+        SimpleAddPane.getChildren().add(Signal1ImChart);
+        SimpleAddPane.getChildren().add(Signal2ReChart);
+        SimpleAddPane.getChildren().add(Signal2ImChart);
+        SimpleAddPane.getChildren().add(resultReChart);
+        SimpleAddPane.getChildren().add(resultImChart);
     }
 
     public void preview() throws IOException {
         try {
             Signal Result = new Signal();
             prepareResult(Result);
-            XYChart.Series<Number, Number> series = new XYChart.Series();
-            Methods.addPointToSeries(series, Result);
-            ResultChart.setCreateSymbols(false);
-            ResultChart.setLegendVisible(true);
-            ResultChart.getData().clear();
-            ResultChart.getData().add(series);
+            XYChart.Series<Number, Number> reSeries = new XYChart.Series();
+             XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+            Methods.addRePointToSeries(reSeries, Result);
+            Methods.addImPointToSeries(imSeries, Result);
+            
+            resultReChart.setCreateSymbols(false);
+            resultReChart.setLegendVisible(true);
+            resultReChart.getData().clear();
+            resultReChart.getData().add(reSeries);
+            
+            resultImChart.setCreateSymbols(false);
+            resultImChart.setLegendVisible(true);
+            resultImChart.getData().clear();
+            resultImChart.getData().add(imSeries);
         } catch (Exception e) {
             Methods M = new Methods();
             M.showErrorBox("/fxml/CheckDataError.fxml");
@@ -93,15 +119,18 @@ public class FilterController extends AbstractMain {
     @FXML
     private void cleanPreview() {
         ArrayList<XYChart> ChartsToClear = new ArrayList<>();
-        ChartsToClear.add(Signal1Chart);
-        ChartsToClear.add(Signal2Chart);
+        ChartsToClear.add(Signal1ReChart);
+        ChartsToClear.add(Signal1ImChart);
+        ChartsToClear.add(Signal2ReChart);
+        ChartsToClear.add(Signal2ImChart);
         Methods.clearCharts(ChartsToClear);
     }
 
     @FXML
     private void cleanResult() {
         ArrayList<XYChart> ChartsToClear = new ArrayList<>();
-        ChartsToClear.add(ResultChart);
+        ChartsToClear.add(resultReChart);
+        ChartsToClear.add(resultImChart);
         Methods.clearCharts(ChartsToClear);
     }
 
@@ -109,17 +138,31 @@ public class FilterController extends AbstractMain {
     private void enter() {
         Signal Result = new Signal();
         prepareResult(Result);
-        XYChart.Series<Number, Number> series = new XYChart.Series();
+        
+        XYChart.Series<Number, Number> reSeries = new XYChart.Series();
         String addedSignalName = resultNameField.getText();
-        series.setName(addedSignalName);
-        Methods.addPointToSeries(series, Result);
+        reSeries.setName(addedSignalName);
+        Methods.addRePointToSeries(reSeries, Result);
+        
+        XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+        imSeries.setName(addedSignalName);
+        Methods.addImPointToSeries(imSeries, Result);
+        
         if (Methods.addSignalToMainBase(this.MainController.signals, Result, addedSignalName)) {
             ArrayList<ObservableList<String>> places = super.getSignalLists();
             Methods.addSignal(places, addedSignalName);
-            ResultChart.setCreateSymbols(false);
-            ResultChart.setLegendVisible(true);
-            ResultChart.getData().clear();
-            ResultChart.getData().add(series);
+            
+            resultReChart.setCreateSymbols(false);
+            resultReChart.setLegendVisible(true);
+            resultReChart.getData().clear();
+            resultReChart.getData().add(reSeries);
+            
+            resultImChart.setCreateSymbols(false);
+            resultImChart.setLegendVisible(true);
+            resultImChart.getData().clear();
+            resultImChart.getData().add(imSeries);
+            
+            
         } else {
             try {
                 Methods M = new Methods();
@@ -131,23 +174,22 @@ public class FilterController extends AbstractMain {
     }
 
     private void prepareResult(Signal Result) {
-        addToPreviewChart(SignalAdd1, Signal1Chart);
-        addToPreviewChart(SignalAdd2, Signal2Chart);
+        addToPreviewChart(SignalAdd1, Signal1ReChart, Signal1ImChart);
+        addToPreviewChart(SignalAdd2, Signal2ReChart, Signal2ImChart);
         String SignalXName = Methods.readComboBoxValue(SignalAdd1);
         String SignalYName = this.SignalAdd2.getSelectionModel().
                 getSelectedItem();
         Signal SignalX = MainController.signals.get(SignalXName);
         Signal SignalY = MainController.signals.get(SignalYName);
         Iterator<Complex> ValuesX = SignalX.samples.values().iterator();
-        Collection<Complex> VX = SignalX.samples.values();
-        new ArrayList<Complex>();
+        List<Complex> VX = new ArrayList<Complex>();
         for (int i = 0; i < SignalX.samples.size(); i++) {
-          //  VX.add(ValuesX.next());
+            VX.add(ValuesX.next());
         }
         Iterator<Complex> ValuesY = SignalY.samples.values().iterator();
         List<Complex> VY = new ArrayList<Complex>();
         for (int i = 0; i < SignalY.samples.size(); i++) {
-         //   VY.add(ValuesY.next());
+           VY.add(ValuesY.next());
         }
         Double ax = SignalX.samples.firstKey();
         Double bx = SignalX.samples.lastKey();
@@ -158,16 +200,18 @@ public class FilterController extends AbstractMain {
                 if ((i - j) < 0 || j >= VX.size() || (i - j) >= VY.size()) {
                     valueY = valueY;
                 } else {
-            //       valueY = valueY.plus(VX.get(j).times(VY.get(i - j)));
+                   valueY = valueY.add(VX.get(j).multiply(VY.get(i - j)));
                 }
             }
             Result.samples.put(ax + i * ((bx - 1) / ResultSize), valueY);
         }
     }
 
-    private void addToPreviewChart(ComboBox<String> CB, LineChart<Number, Number> LC) {
-        LC.getData().clear();
-        Methods.addToPreviewWindowSimpleAdd(MainController, LC,
+    private void addToPreviewChart(ComboBox<String> CB, LineChart<Number, Number> reLC,
+            LineChart<Number, Number> imLC) {
+        reLC.getData().clear();
+        imLC.getData().clear();
+        Methods.addToPreviewWindowSimpleAdd(MainController, reLC, imLC,
                 Methods.readComboBoxValue(CB));
     }
 
