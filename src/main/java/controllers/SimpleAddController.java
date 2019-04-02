@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -121,7 +120,7 @@ public class SimpleAddController extends AbstractMain {
             resultReChart.setLegendVisible(true);
             resultReChart.getData().clear();
             resultReChart.getData().add(reSeries);
-            
+
             XYChart.Series<Number, Number> imSeries = new XYChart.Series();
             imSeries.setName(addedSignalName);
             Methods.addImPointToSeries(imSeries, Result);
@@ -173,7 +172,7 @@ public class SimpleAddController extends AbstractMain {
             Signal Result = new Signal();
             prepareResultSignal(SignalX, SignalY, Result);
             XYChart.Series<Number, Number> reSeries = new XYChart.Series();
-             XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+            XYChart.Series<Number, Number> imSeries = new XYChart.Series();
             String addedSignalName = resultNameField.getText();
             reSeries.setName(addedSignalName);
             imSeries.setName(addedSignalName);
@@ -183,12 +182,12 @@ public class SimpleAddController extends AbstractMain {
                 Methods.addSignal(places, addedSignalName);
                 Methods.addRePointToSeries(reSeries, Result);
                 Methods.addImPointToSeries(imSeries, Result);
-                
+
                 resultReChart.setCreateSymbols(false);
                 resultReChart.setLegendVisible(true);
                 resultReChart.getData().clear();
                 resultReChart.getData().add(reSeries);
-            
+
                 resultImChart.setCreateSymbols(false);
                 resultImChart.setLegendVisible(true);
                 resultImChart.getData().clear();
@@ -216,47 +215,55 @@ public class SimpleAddController extends AbstractMain {
         Double bx = SignalX.samples.lastKey();
         Double ay = SignalY.samples.firstKey();
         Double by = SignalY.samples.lastKey();
-        Double a = Math.max(ax, ay);
-        Double b = Math.min(bx, by);
+        // Double a = Math.max(ax, ay);
+        //  Double b = Math.min(bx, by);
+
+        Double a = Math.min(ax, ay);
+        Double b = Math.max(bx, by);
 
         //---------Mathematical chosen action on chosen Signals-----------------
-        if (by < ax || bx < ay) {
-            System.out.println("Cannot handle!");
-        } else {
-            Set<Double> ResultKeys = new TreeSet<>(KeysX);
-            ResultKeys.addAll(KeysY);
-            Object[] ResultKeysTab = ResultKeys.toArray();
-
-            for (Object elem : ResultKeysTab) {
-                Complex ValueX;
-                Complex ValueY;
-                Double entry = (Double) elem;
-                if (entry < a || entry > b) {
-                    ResultKeys.remove(entry);
+        //       if (by < ax || bx < ay) {
+        Set<Double> ResultKeys = new TreeSet<>(KeysX);
+        ResultKeys.addAll(KeysY);
+        for (double j = a; j <= b; j += 0.007) {
+            if (!KeysX.contains(j) && !KeysY.contains(j)) {
+                ResultKeys.add(j);
+            }
+        };
+        Object[] ResultKeysTab = ResultKeys.toArray();
+        for (Object elem : ResultKeysTab) {
+            Complex ValueX;
+            Complex ValueY;
+            Double entry = (Double) elem;
+            if (entry < a || entry > b) {
+                ResultKeys.remove(entry);
+            } else {
+                if (KeysX.contains(entry)) {
+                    ValueX = SignalX.samples.get(entry);
+                } else if (entry < ax || entry > bx) {
+                    ValueX = new Complex(0.0, 0.0);
                 } else {
-                    if (KeysX.contains(entry)) {
-                        ValueX = SignalX.samples.get(entry);
-                    } else {
-                        Double PreviousKey = SignalX.samples.lowerKey(entry);
-                        Double NextKey = SignalX.samples.higherKey(entry);
-                        ValueX = Methods.assertValue(entry, PreviousKey,
-                                NextKey, SignalX.samples.get(PreviousKey),
-                                SignalX.samples.get(NextKey));
-                    }
-                    if (KeysY.contains(entry)) {
-                        ValueY = SignalY.samples.get(entry);
-                    } else {
-                        Double PreviousKey = SignalY.samples.lowerKey(entry);
-                        Double NextKey = SignalY.samples.higherKey(entry);
-                        ValueY = Methods.assertValue(entry, PreviousKey,
-                                NextKey, SignalY.samples.get(PreviousKey),
-                                SignalY.samples.get(NextKey));
-                    }
-
-                    Complex Value = Methods.setSimpleActiom(AddChoice,
-                            ValueX, ValueY);
-                    Result.samples.put(entry, Value);
+                    Double PreviousKey = SignalX.samples.lowerKey(entry);
+                    Double NextKey = SignalX.samples.higherKey(entry);
+                    ValueX = Methods.assertValue(entry, PreviousKey,
+                            NextKey, SignalX.samples.get(PreviousKey),
+                            SignalX.samples.get(NextKey));
                 }
+                if (KeysY.contains(entry)) {
+                    ValueY = SignalY.samples.get(entry);
+                } else if (entry < ay || entry > by) {
+                    ValueY = new Complex(0.0, 0.0);
+                } else {
+                    Double PreviousKey = SignalY.samples.lowerKey(entry);
+                    Double NextKey = SignalY.samples.higherKey(entry);
+                    ValueY = Methods.assertValue(entry, PreviousKey,
+                            NextKey, SignalY.samples.get(PreviousKey),
+                            SignalY.samples.get(NextKey));
+                }
+
+                Complex Value = Methods.setSimpleActiom(AddChoice,
+                        ValueX, ValueY);
+                Result.samples.put(entry, Value);
             }
 
         }

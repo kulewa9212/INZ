@@ -11,8 +11,11 @@ controllers\StartController$6.class
 controllers\StartController.class
 controllers\StartController$8.class
 controllers\StartController$3.class
+controllers\FourierController.class
 com\mycompany\inz\MainApp.class
 controllers\SamplingController.class
+controllers\FiltersController.class
+controllers\NewFilterController.class
 controllers\StartController$4.class
 controllers\RecoverController.class
 controllers\StartController$9.class

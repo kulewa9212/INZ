@@ -40,6 +40,8 @@ public abstract class AbstractMain {
                 getItems());
         places.add(MainController.quantiController.signalList.
                 getItems());
+        places.add(MainController.fourierController.SignalList.getItems());
+        places.add(MainController.filtersController.SignalAdd1.getItems());
         return places;
     }
 }

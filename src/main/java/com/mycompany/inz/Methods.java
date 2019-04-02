@@ -82,6 +82,25 @@ public class Methods {
         Methods.addImPointToSeries(imSeries, FoundSignal);
         Methods.setPreviewChart(ImSignalChart, imSeries);
     }
+    
+        public static void addToPreviewFilterWindowSimpleAdd(MainController MC,
+            LineChart<Number, Number> ReSignalChart, LineChart<Number, Number> ImSignalChart, String Signal1ToFind) {
+        Signal FoundSignal;
+        FoundSignal = MC.filterList.get(Signal1ToFind);
+
+        //Add points to diagram
+        XYChart.Series<Number, Number> reSeries = new XYChart.Series();
+        reSeries.getData().clear();
+        reSeries.setName(Signal1ToFind);
+        Methods.addRePointToSeries(reSeries, FoundSignal);
+        Methods.setPreviewChart(ReSignalChart, reSeries);
+
+        XYChart.Series<Number, Number> imSeries = new XYChart.Series();
+        imSeries.getData().clear();
+        imSeries.setName(Signal1ToFind);
+        Methods.addImPointToSeries(imSeries, FoundSignal);
+        Methods.setPreviewChart(ImSignalChart, imSeries);
+    }
 
     public static Complex setSimpleActiom(ComboBox<String> ComboArg,
             Complex ValueX, Complex ValueY) {
@@ -126,6 +145,16 @@ public class Methods {
                     entry.getValue().getImaginary()));
         }
     }
+    
+       public static void addAbsPointToSeries(XYChart.Series series,
+            Signal SignalArg) {
+        series.getData().clear();
+        Set<Map.Entry<Double, Complex>> entrySet = SignalArg.samples.entrySet();
+        for (Map.Entry<Double, Complex> entry : entrySet) {
+            series.getData().add(new XYChart.Data(entry.getKey(),
+                    entry.getValue().abs()));
+        }
+    }
 
     public static void clearCharts(List<XYChart> Charts) {
         for (XYChart Elem : Charts) {
@@ -134,7 +163,8 @@ public class Methods {
 
     }
 
-    public static boolean addSignalToMainBase(TreeMap<String, Signal> signalBase, Signal signal, String SignalName) {
+    public static boolean addSignalToMainBase(TreeMap<String, Signal>
+            signalBase, Signal signal, String SignalName) {
         if (signalBase.containsKey(SignalName) || SignalName.isEmpty()) {
             return false;
         } else {

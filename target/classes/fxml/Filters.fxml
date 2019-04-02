@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="SimpleAddPane" prefHeight="990.0" prefWidth="2120.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FiltersController">
+   <children>
+      <ComboBox fx:id="SignalAdd1" layoutX="45.0" layoutY="386.0" prefHeight="32.0" prefWidth="173.0" />
+      <ComboBox fx:id="filters" layoutX="537.0" layoutY="386.0" prefHeight="32.0" prefWidth="173.0" />
+      <TextField fx:id="resultNameField" layoutX="1692.0" layoutY="520.0" />
+      <Button layoutX="1692.0" layoutY="66.0" mnemonicParsing="false" onMouseClicked="#preview" prefHeight="39.0" prefWidth="187.0" text="Preview" />
+      <Button layoutX="1692.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#cleanPreview" prefHeight="39.0" prefWidth="187.0" text="Clean" />
+      <Button layoutX="1692.0" layoutY="581.0" mnemonicParsing="false" onMouseClicked="#enter" prefHeight="39.0" prefWidth="187.0" text="Enter" />
+      <Separator layoutX="1610.0" layoutY="8.0" orientation="VERTICAL" prefHeight="833.0" prefWidth="37.0" />
+      <Separator layoutY="384.0" prefHeight="16.0" prefWidth="2121.0" />
+      <Button layoutX="1692.0" layoutY="648.0" mnemonicParsing="false" onMouseClicked="#cleanResult" prefHeight="39.0" prefWidth="187.0" text="Clean" />
+      <Button layoutX="1692.0" layoutY="211.0" mnemonicParsing="false" onAction="#loadFromFile" onMouseClicked="#cleanPreview" prefHeight="39.0" prefWidth="187.0" text="Load filter from file" />
+   </children>
+</AnchorPane>

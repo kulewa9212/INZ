@@ -7,6 +7,10 @@ import javafx.fxml.FXML;
 public class MainController {
 
     public TreeMap<String, Signal> signals;
+    
+    public TreeMap<String, Signal> filterList;
+    
+  
 
     @FXML
     StartController startController;
@@ -28,10 +32,20 @@ public class MainController {
     
     @FXML
     QuantiController quantiController;
-
+    
+    @FXML
+    FourierController fourierController;
+    
+    @FXML
+    FiltersController filtersController;
+    
+    @FXML
+    NewFilterController newFilterController;
+    
     @FXML
     public void initialize() {
         this.signals = new TreeMap();
+        this.filterList = new TreeMap();
         startController.init(this);
         displayController.init(this);
         simpleAddController.init(this);
@@ -39,5 +53,8 @@ public class MainController {
         samplingController.init(this);
         recoverController.init(this);
         quantiController.init(this);
+        fourierController.init(this);
+        filtersController.init(this);
+        newFilterController.init(this);
     }
 }

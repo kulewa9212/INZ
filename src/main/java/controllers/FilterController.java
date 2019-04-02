@@ -203,7 +203,7 @@ public class FilterController extends AbstractMain {
                    valueY = valueY.add(VX.get(j).multiply(VY.get(i - j)));
                 }
             }
-            Result.samples.put(ax + i * ((bx - 1) / ResultSize), valueY);
+            Result.samples.put(ax + i * ((bx - ax) / ResultSize), valueY);
         }
     }
 

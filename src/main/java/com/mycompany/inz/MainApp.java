@@ -6,9 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.commons.math3.complex.Complex;
 
-import org.apache.commons.math3.complex.ComplexFormat;
 
 public class MainApp extends Application {
 

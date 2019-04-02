@@ -41,9 +41,24 @@
                         <fx:include fx:id="recover" source="Recover.fxml" />
                     </content>
                 </Tab>
-                 <Tab text="Quanti                ">
+                <Tab text="Quanti                ">
                     <content>
                         <fx:include fx:id="quanti" source="QuantiView.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Fourier                ">
+                    <content>
+                        <fx:include fx:id="fourier" source="Fourier.fxml" />
+                    </content>
+                </Tab>
+                <Tab text="Filters                ">
+                    <content>
+                        <fx:include fx:id="filters" source="Filters.fxml" />
+                    </content>
+                </Tab>
+            <Tab text="Create filter                ">
+                    <content>
+                        <fx:include fx:id="newFilter" source="NewFilterView.fxml" />
                     </content>
                 </Tab>
             </tabs>

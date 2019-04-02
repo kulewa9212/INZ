@@ -80,6 +80,12 @@ public class StartController extends AbstractMain {
 
     @FXML
     private TextField CapacityField;
+    
+    @FXML
+    private TextField fsField;
+    
+    @FXML
+    private Label fsLabel;
 
     @FXML
     private Label CapacityLabel;
@@ -331,7 +337,7 @@ public class StartController extends AbstractMain {
     private void previewAndOrLoad(double a, double b,
             XYChart.Series<Number, Number> series, Signal S, boolean loadFlag) {
         Double signalValue = 0.0;
-        Double step = 0.007;
+        Double step = 1/(Double.parseDouble(fsField.getText()));
         if (SelectedSignal != SignalShape.NONSIGNAL) {
             if (SelectedSignal == SignalShape.FUP) {
                 for (double i = a; i < b; i++) {
@@ -423,7 +429,7 @@ public class StartController extends AbstractMain {
                         double kw = Double.parseDouble(CapacityField.getText());
                         int k = -1;
                         for (double i = a; i < b; i = i + step) {
-                            if ((i > k * Period) && (i < kw * Period + k * Period + a)) {
+                            if ((i > k * Period + a) && (i < kw * Period + k * Period + a)) {
                                 signalValue = (A / (kw * Period) * (i - k * Period - a));
                                 series.getData().add(new XYChart.Data(i,
                                         signalValue));
@@ -433,20 +439,23 @@ public class StartController extends AbstractMain {
                                         * (i - k * Period - a) + (A / (1 - kw));
                                 series.getData().add(new XYChart.Data(i,
                                         signalValue));
+                                //  probablyLoad(S, i, signalValue, loadFlag);
                             } else if (i > Period + k * Period + a) {
                                 signalValue = (A / (kw * Period) * (i - (k + 1) * Period - a));
                                 series.getData().add(new XYChart.Data(i,
                                         signalValue));
+                                //  probablyLoad(S, i, signalValue, loadFlag);
                                 k++;
                             }
                             probablyLoad(S, i, signalValue, loadFlag);
+
                         }
                         break;
                     case RECTANGLE:
                         double kwr = Double.parseDouble(CapacityField.getText());
                         int l = -1;
                         for (double i = a; i < b; i = i + step) {
-                            if ((i > l * Period) && (i < kwr * Period + l * Period + a)) {
+                            if ((i == a) || ((i >= l * Period + a) && (i <= kwr * Period + l * Period + a))) {
                                 signalValue = A;
                                 series.getData().add(new XYChart.Data(i, signalValue));
                             } else if ((i > kwr * Period + l * Period + a)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="DisplayPane" prefHeight="990.0" prefWidth="2120.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FourierController">
+   <children>
+      <ComboBox fx:id="SignalList" layoutX="36.0" layoutY="55.0" prefHeight="54.0" prefWidth="274.0" />
+      <Button layoutX="36.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#addToChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Fourier tranform" />
+      <Button layoutX="36.0" layoutY="321.0" mnemonicParsing="false" onMouseClicked="#cleanSignalChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Clean " />
+      <Button layoutX="36.0" layoutY="656.0" mnemonicParsing="false" onAction="#loadToFile" onMouseClicked="#cleanSignalChart" prefHeight="36.0" prefWidth="274.0" stylesheets="@../styles/buttons.css" text="Load to file" />
+      <TextField fx:id="filterName" layoutX="36.0" layoutY="477.0" prefHeight="37.0" prefWidth="274.0" />
+      <TextField fx:id="nField" layoutX="165.0" layoutY="251.0" prefHeight="37.0" prefWidth="145.0" />
+      <Label layoutX="42.0" layoutY="248.0" prefHeight="44.0" prefWidth="57.0" text="N" />
+      <Button layoutX="38.0" layoutY="558.0" mnemonicParsing="false" onMouseClicked="#saveFilter" prefHeight="44.0" prefWidth="274.0" styleClass="..\styles\buttons.css" text="Button" />
+   </children>
+</AnchorPane>
